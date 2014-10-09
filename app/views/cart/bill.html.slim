@@ -1,0 +1,11 @@
+h3 Your bill
+ul
+  - @product_group.to_hash.each do |product|
+    = render 'cart/product', product: product
+div.alert.alert-info 
+  div
+    | Sales Taxes:
+    = @product_group.taxes
+  div
+    | Total:
+    = @product_group.total    

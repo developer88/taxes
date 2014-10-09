@@ -1,0 +1,4 @@
+li
+  span
+    = product[:count] if product[:count]
+    = "#{product[:imported] ? " imported" : ""} #{product[:name]}: #{product[:price]}"

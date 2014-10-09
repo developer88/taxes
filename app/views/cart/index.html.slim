@@ -1,0 +1,25 @@
+= form_tag("/", method: "get", class: "form well", role: "form")
+
+  - if @product && @product.errors.size
+    ul.bg-danger
+      - @product.errors.full_messages.each do |msg| 
+        li= msg
+
+  .form-group
+    = label_tag("product_name", "Product name:")
+    = text_field_tag("product[name]", "", class: "form-control")
+  .form-group
+    = label_tag("product_price", "Price:")
+    = text_field_tag("product[price]", "", class: "form-control")
+  .form-group
+    = label_tag("product_imported", "Imported?:")
+    = check_box_tag "product[imported]", 1, false
+
+  = submit_tag("Add product")
+
+= form_tag("/bill", method: "post", class: "form well", role: "form")
+  = submit_tag("Bill please!")
+
+- if @goods 
+  hr
+    = render 'cart/list', goods: @goods
