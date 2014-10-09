@@ -4,10 +4,12 @@ class Product
 
 	include ActiveModel::Validations
 
-	attr_accessor :name, :imported, :price, :tax
-	attr_reader :count
+	attr_accessor :name, :imported, :price, :tax, :count, :type
+
 	validates :name, presence: true
 	validates :price, numericality: true, presence: true
+	validates :type, inclusion: { in: %w(book food medical electronics cosmetics),
+    message: "%{value} is not a valid type" }
 
 	def initialize(params = {})
 	  params.each do |name, value|

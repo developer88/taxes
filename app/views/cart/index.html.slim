@@ -14,6 +14,10 @@
   .form-group
     = label_tag("product_imported", "Imported?:")
     = check_box_tag "product[imported]", 1, false
+  .form-group
+    = label_tag("product_type", "Type:")
+    = select_tag "product[type]", options_for_select(%w(book food medical electronics cosmetics), "book"), class: "form-control"
+
 
   = submit_tag("Add product")
 

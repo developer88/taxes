@@ -7,12 +7,13 @@ class ProductGroup
 	attr_accessor :list
 
 	def initialize
-	  @list = []
+	    @list = []
 	end	
 
 	def add(product)
 		p = Product.new(product)
 		list << p if p.valid?
+		# todo
 	end
 
 	def to_hash
@@ -20,7 +21,7 @@ class ProductGroup
 	end
 
 	def total
-		0
+		list.map{ |p| p.price }.inject{|sum,x| sum + x } + taxes
 	end
 
 	def taxes

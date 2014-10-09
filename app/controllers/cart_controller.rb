@@ -18,11 +18,11 @@ class CartController < ApplicationController
 	private
 
 		def initialize_session
-			session[:goods] = [] unless session[:goods]	
+			session[:goods] = [] if session[:goods].nil?
 		end
 
 		def cart_params
-			params.permit(product: [:name, :price, :imported])
+			params.permit(product: [:name, :price, :imported, :type])
 		end	
 
 end
