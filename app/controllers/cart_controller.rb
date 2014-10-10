@@ -2,12 +2,9 @@ class CartController < ApplicationController
 
 	before_filter :initialize_session
 
-	def index			
-		if cart_params[:product]
-			@product = Product.new(cart_params[:product])
-			session[:goods] << @product.to_hash if @product.valid?
-		end
-		@goods = session[:goods]
+	def index		
+		@product = Product.new cart_params.fetch(:product, {})	
+		session[:goods] << @product.to_hash if cart_params[:product] &&	@product.valid? 
 	end
 
 	def bill
@@ -22,7 +19,7 @@ class CartController < ApplicationController
 		end
 
 		def cart_params
-			params.permit(product: [:name, :price, :imported, :type])
+			params.permit(product:[:name, :price, :imported, :type])
 		end	
 
 end

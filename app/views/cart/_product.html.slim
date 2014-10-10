@@ -1,4 +1,4 @@
+- use_tax ||= false
 li
   span
-    = product[:count] if product[:count]
-    = "#{product[:imported] ? " imported" : ""} #{product[:name]}: #{product[:price]}"
+    = "#{product["count"]} #{product["imported"] ? " imported" : ""} #{product["name"]}: #{(product["count"] * product["price"].to_f) + (use_tax ? product["tax"] : 0) }"

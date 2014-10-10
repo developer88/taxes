@@ -1,3 +1,4 @@
+- use_tax ||= false
 ul
   - goods.each do |product|
-    = render 'cart/product', product: product
+    = render 'cart/product', product: product, use_tax: use_tax

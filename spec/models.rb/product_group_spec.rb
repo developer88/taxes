@@ -4,8 +4,8 @@ require 'rails_helper'
 RSpec.describe ProductGroup, type: :model do
 
   subject { ProductGroup.new }
-  let(:simple_product) { {name: 'Product1', price: 10.2} }
-  let(:imported_product) { {name: 'ImportedProduct1', price: 20.2, imported: true} }
+  let(:simple_product) { {name: 'Product1', price: 10.2, type: 'book'} }
+  let(:imported_product) { {name: 'ImportedProduct1', price: 20.2, imported: true, type: 'book'} }
 
   describe '#add' do
 
@@ -25,12 +25,14 @@ RSpec.describe ProductGroup, type: :model do
 
     it 'should return count param inside product objects for several identical products' do
       subject.add simple_product
-      expect(subject.to_hash.size).to eq(2)
+      expect(subject.to_hash.size).to eq(1)
+      expect(subject.to_hash.first['count']).to eq(2)
     end
 
-    it 'should return products objects without count param' do
+    it 'should return products objects without count = 1' do
       expect(subject.to_hash.size).to eq(1)
       expect(subject.to_hash.class).to eq(Array)
+      expect(subject.to_hash.first['count']).to eq(1)
     end
 
   end
@@ -41,8 +43,8 @@ RSpec.describe ProductGroup, type: :model do
       subject.add simple_product
       subject.add simple_product
       subject.add imported_product
-      expect(subject.list.size).to eq(3)
-      expect(subject.total).to eq(simple_product[:price]*2 + imported_product[:price])
+      expect(subject.list.size).to eq(2)
+      expect(subject.total).to eq( (subject.taxes + (simple_product[:price]*2 + imported_product[:price])).round(2) )
     end
 
   end
@@ -53,9 +55,8 @@ RSpec.describe ProductGroup, type: :model do
       subject.add simple_product
       subject.add simple_product
       subject.add imported_product
-      expect(subject.list.size).to eq(3)
-      taxes = 1 # Lets say we know the result (avoid lots of calculation here)
-      expect(subject.taxes).to eq(taxes)
+      expect(subject.list.size).to eq(2)
+      expect(subject.taxes).to eq(1.05) # Lets say we know the result (avoid lots of calculation here)
     end
 
   end
@@ -67,9 +68,9 @@ RSpec.describe ProductGroup, type: :model do
       context 'Input 1' do
 
         before do
-          subject.add({ name:'book', price:12.49 })
-          subject.add({ name:'music CD', price: 14.99})
-          subject.add({ name:'chocolate bar', price: 0.85})
+          subject.add({ name:'book', price: 12.49, type: 'book' })
+          subject.add({ name:'music CD', price: 14.99, type: 'electronics'})
+          subject.add({ name:'chocolate bar', price: 0.85, type: 'food'})
         end
 
         it 'should properly calculate total price' do
@@ -85,8 +86,8 @@ RSpec.describe ProductGroup, type: :model do
       context 'Input 2' do
 
         before do
-          subject.add({name: 'box of chocolates', price: 10.00, imported: true})
-          subject.add({name: 'bottle of perfume', price: 47.50, imported: true})
+          subject.add({name: 'box of chocolates', price: 10.00, imported: true, type: 'food'})
+          subject.add({name: 'bottle of perfume', price: 47.50, imported: true, type: 'cosmetics'})
         end
 
         it 'should properly calculate total price' do
@@ -102,10 +103,10 @@ RSpec.describe ProductGroup, type: :model do
       context 'Input 3' do
 
         before do
-          subject.add({name: 'bottle of perfume', price: 27.99, imported: true})
-          subject.add({name: 'bottle of perfume', price: 18.99})
-          subject.add({name: 'packet of headache pills', price: 9.75})
-          subject.add({name: 'box of chocolates', price: 11.25, imported: true})
+          subject.add({name: 'bottle of perfume', price: 27.99, imported: true, type: 'cosmetics'})
+          subject.add({name: 'bottle of perfume', price: 18.99, type: 'cosmetics'})
+          subject.add({name: 'packet of headache pills', price: 9.75, type: 'medicine'})
+          subject.add({name: 'box of chocolates', price: 11.25, imported: true, type: 'food'})
         end
 
         it 'should properly calculate total price' do

@@ -10,22 +10,29 @@ class ProductGroup
 	    @list = []
 	end	
 
+	# Merge similar product by incrementing it's count parameter
 	def add(product)
-		p = Product.new(product)
-		list << p if p.valid?
-		# todo
+		product = Product.new(product)
+		return unless product.valid?
+		if existed = list.select{|p| p.name == product.name && p.type == product.type && p.price == product.price && p.imported == product.imported }.first
+			existed.count += 1 
+		else
+			list << product 
+		end
 	end
 
 	def to_hash
 		list.map{|p| p.to_hash}
 	end
 
+	# Calculate total price
 	def total
-		list.map{ |p| p.price }.inject{|sum,x| sum + x } + taxes
+		(list.map{ |p| p.total }.inject{|sum,x| sum + x }.to_f + taxes).round(2)
 	end
 
+	# Calculate total taxes
 	def taxes
-		0
+		(list.map{ |p| p.tax }.inject{|sum,x| sum + x }.to_f).round(2)
 	end
 
 end

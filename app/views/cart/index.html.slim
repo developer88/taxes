@@ -7,23 +7,23 @@
 
   .form-group
     = label_tag("product_name", "Product name:")
-    = text_field_tag("product[name]", "", class: "form-control")
+    = text_field_tag("product[name]", @product.name, class: "form-control")
   .form-group
     = label_tag("product_price", "Price:")
-    = text_field_tag("product[price]", "", class: "form-control")
+    = text_field_tag("product[price]", @product.price, class: "form-control")
   .form-group
     = label_tag("product_imported", "Imported?:")
-    = check_box_tag "product[imported]", 1, false
+    = check_box_tag "product[imported]", 1, @product.imported
   .form-group
     = label_tag("product_type", "Type:")
-    = select_tag "product[type]", options_for_select(%w(book food medical electronics cosmetics), "book"), class: "form-control"
-
+    = select_tag "product[type]", options_for_select(%w(book food medical electronics cosmetics), @product.type), class: "form-control"
 
   = submit_tag("Add product")
 
 = form_tag("/bill", method: "post", class: "form well", role: "form")
   = submit_tag("Bill please!")
 
-- if @goods 
+- if session[:goods].size > 0
+  h3 Your cart
   hr
-    = render 'cart/list', goods: @goods
+    = render 'cart/list', goods: session[:goods], use_tax: false

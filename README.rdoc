@@ -4,12 +4,12 @@ Here is my test exercise.
 
 What i did:
 
-* Wrrote a simpe Cart with a print bill function
+* Wrote a simple Cart App with a print bill function
 
-* Added Bootstrap to make everything looks more beautifull
+* Added Twitter Bootstrap to make everything looks more beautifull
 
-* Added simple validation
+* Added simple validations
 
-* Added unit tests for Bill function (i decided to cover only things that you asked)
+* Added unit tests for Bill functionality (i decided to cover only things that you asked me to do) + added specs to cover your input data
 
 * Wrote this ReadMe file
